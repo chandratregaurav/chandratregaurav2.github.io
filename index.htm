@@ -1,0 +1,78 @@
+  <html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <meta name="author" content="Aurelio De Rosa">
+      <title>Device Orientation API Demo by Aurelio De Rosa</title>
+	   <div id="do-info" class="hidden">
+				<p>
+				   Coordinates:
+				   (<span id="beta" class="value">null</span>,
+				   <span id="gamma" class="value">null</span>,
+				   <span id="alpha" class="value">null</span>)		  
+			 </div>
+		
+		<div id="do-info_1" class="hidden">
+				<p>
+				   Acceleration :
+				   (<span id="xAcceleration" class="value">null</span>,
+				   <span id="yAcceleration" class="value">null</span>,
+				   <span id="zAcceleration" class="value">null</span>)		  
+			 </div>
+			 
+			 <div id="Setting" class="hidden">
+				<p>
+				   Is Sitting :
+				   <span id="IsSitting" class="value">null</span>
+
+			 </div>
+  <script>
+  
+
+   var aX;
+   var aY ;
+   var aZ;
+function handleMotionEvent(event) {
+
+  aX = event.accelerationIncludingGravity.x * 100 ;
+  aY = event.accelerationIncludingGravity.y * 100 ;
+  aZ = event.accelerationIncludingGravity.z * 100 ;
+  
+  document.getElementById('xAcceleration').innerHTML = Math.round(aX);
+	document.getElementById('yAcceleration').innerHTML = Math.round(aY);
+	document.getElementById('zAcceleration').innerHTML = Math.round(aZ);
+	
+    if (aY > 600 || aY < -900 )
+	{
+		document.getElementById('IsSitting').innerHTML ="True";
+    } 
+	else{
+		document.getElementById('IsSitting').innerHTML ="False";
+    }
+   
+}
+
+window.addEventListener("devicemotion", handleMotionEvent, true);
+
+
+if (window.DeviceOrientationEvent) {
+    window.addEventListener("deviceorientation", function(event) {
+        // alpha: rotation around z-axis
+        var rotateDegrees = event.alpha;
+        // gamma: left to right
+        var leftToRight = event.gamma;
+        // beta: front back motion
+        var frontToBack = event.beta;
+
+        handleOrientationEvent(frontToBack, leftToRight, rotateDegrees);
+    }, true);
+}
+
+var handleOrientationEvent = function(frontToBack, leftToRight, rotateDegrees) {
+    document.getElementById('beta').innerHTML = Math.round(frontToBack);
+	document.getElementById('gamma').innerHTML = Math.round(leftToRight);
+	document.getElementById('alpha').innerHTML = Math.round(rotateDegrees);
+	
+};
+  </script>
+  </html>
